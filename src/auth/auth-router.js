@@ -6,6 +6,9 @@ const bodyParser = express.json();
 
 AuthRouter
   .route('/register')
+  .get((req, res) => {
+    res.send('Auth Router');
+  })
   .post(bodyParser, (req, res, next) => {
     const { username, password } = req.body;
     let newUser = { username, password };
