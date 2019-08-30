@@ -7,6 +7,8 @@ const { NODE_ENV } = require('./config');
 
 const app = express();
 
+const AuthRouter = require('./auth/auth-router');
+
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
@@ -18,6 +20,8 @@ app.use(helmet());
 app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
+
+app.use('/api/auth', AuthRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
