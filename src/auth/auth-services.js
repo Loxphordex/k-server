@@ -9,8 +9,8 @@ const AuthServices = {
   getById(db, id) {
     return db
       .select('*')
-      .from('user')
-      .where('user.id', id)
+      .from('users')
+      .where('users.id', id)
       .first();
   },
 
@@ -31,7 +31,7 @@ const AuthServices = {
   },
 
   hasUserWithUsername(db, username) {
-    return db('user')
+    return db('users')
       .where({ username })
       .first()
       .then(user => !!user);
@@ -44,7 +44,7 @@ const AuthServices = {
   insertUser(db, newUser) {
     return db
       .insert(newUser)
-      .into('user')
+      .into('users')
       .returning('*')
       .then(([user]) => user)
       .then(user => {
@@ -60,7 +60,7 @@ const AuthServices = {
   },
 
   getUserWithUsername(db, username) {
-    return db('user')
+    return db('users')
       .where({ username })
       .first();
   },
