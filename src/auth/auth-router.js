@@ -25,7 +25,7 @@ AuthRouter
       .then(hashedPassword => {
         newUser.password = hashedPassword;
 
-        AuthServices.insertUser(req.app.get('app'), newUser)
+        AuthServices.insertUser(req.app.get('db'), newUser)
           .then(user => {
             res.status(201)
               .location(path.posix.join(req.originalUrl, `/${user.id}`))
