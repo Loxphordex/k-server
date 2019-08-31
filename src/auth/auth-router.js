@@ -29,7 +29,7 @@ AuthRouter
 
         AuthServices.insertUser(req.app.get('db'), newUser)
           .then(user => {
-            console.log('USER INSERTED')
+            console.log('USER INSERTED');
             res.status(201)
               .location(path.posix.join(req.originalUrl, `/${user.id}`))
               .json(AuthServices.serializeUser(user));
@@ -39,6 +39,9 @@ AuthRouter
 
 AuthRouter
   .route('/login')
+  .get((req, res) => {
+    res.send('Auth Login');
+  })
   .post(bodyParser, (req, res, next) => {
     const { username, password } = req.body;
     const userLogin = { username, password };
