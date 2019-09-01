@@ -1,6 +1,7 @@
 const express = require('express');
 const ImagesRouter = express.Router();
 const bodyParser = express.json();
+const requireAuth = require('../middleware/jwt-auth');
 const ImagesServices = require('./images-services');
 const path = require('path');
 
@@ -18,7 +19,7 @@ ImagesRouter
         return res.json({ images });
       });
   })
-  .post(bodyParser, (req, res, next) => {
+  .post(bodyParser, requireAuth, (req, res, next) => {
     const { url, name, link } = req.body;
     let newImage = { url, name, link };
 

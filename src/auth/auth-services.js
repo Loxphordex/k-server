@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const xss  = require('xss');
 const config = require('../config');
 
-const REGEX = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
-
 const AuthServices = {
   getById(db, id) {
     return db
@@ -12,22 +10,6 @@ const AuthServices = {
       .from('users')
       .where('users.id', id)
       .first();
-  },
-
-  validatePassword(password) {
-    if (password.length < 6) {
-      return 'Password must be at least 6 characters';
-    }
-    if (password.length > 72) {
-      return 'Password cannot be longer than 72 characters';
-    }
-    if (password.startsWith(' ') || password.endsWith(' ')) {
-      return 'Password must not begin or end with spaces';
-    }
-    if (!REGEX.test(password)) {
-      return 'Password must contain an uppercase and lowercase letter, a number, and a special character';
-    }
-    return null;
   },
 
   hasUserWithUsername(db, username) {
