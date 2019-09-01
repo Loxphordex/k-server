@@ -8,6 +8,7 @@ const { NODE_ENV } = require('./config');
 const app = express();
 
 const AuthRouter = require('./auth/auth-router');
+const ImagesRouter = require('./images/images-router');
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', AuthRouter);
+app.use('/api', ImagesRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
