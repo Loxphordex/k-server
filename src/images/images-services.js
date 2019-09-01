@@ -1,15 +1,13 @@
 const ImagesServices = {
   getById(db, id) {
-    return db
+    return db('images')
       .select('*')
-      .from('images')
       .where('images.id', id)
       .first();
   },
   getAllImages(db) {
-    return db
-      .select('*')
-      .from('images');
+    return db('images')
+      .select('*');
   },
   insertImage(db, image) {
     return db
