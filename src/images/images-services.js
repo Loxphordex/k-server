@@ -15,7 +15,7 @@ const ImagesServices = {
       .into('images')
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(image.id));
+      .then(image => ImagesServices.getById(db ,image.id));
   },
 };
 
