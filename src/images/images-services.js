@@ -7,7 +7,8 @@ const ImagesServices = {
   },
   getAllImages(db) {
     return db('images')
-      .select('*');
+      .select('*')
+      .orderBy('id', 'desc');
   },
   insertImage(db, image) {
     return db
