@@ -42,6 +42,74 @@ ImagesRouter
           .json({ dbImage });
       })
       .catch(next);
+  })
+  .patch(requireAuth, (req, res, next) => {
+    const { id, name, link } = req.query;
+
+    if (!id) {
+      return res.status(400).json({
+        error: 'Missing id in request query'
+      });
+    }
+
+    if (!name && !link) {
+      return res.status(400).json({
+        error: 'Missing name and link in request query'
+      });
+    }
+
+    let resImage = {};
+
+    if (name) {
+      ImagesServices.renameImage(req.app.get('db'), id, name)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with name ${name} and id ${id} exists`
+            });
+          }
+
+          resImage.name = image.name;
+        })
+        .catch(next);
+    }
+
+    if (!link) {
+      ImagesServices.alterLink(req.app.get('db'), id, link)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with link ${link} and id ${id} exists`
+            });
+          }
+
+          resImage.link = image.link;
+        })
+        .catch(next);
+    }
+
+    return res.status(200).json(resImage);
+  })
+  .delete(requireAuth, (req, res, next) => {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({
+        error: 'Missing id in request query'
+      });
+    }
+
+    ImagesServices.deleteImage(req.app.get('db'), id)
+      .then(imageId => {
+        if (!imageId) {
+          return res.status(404).json({
+            error: `No image with id ${id} exists`
+          });
+        }
+
+        return res.status(200).json({ id: imageId });
+      })
+      .catch(next);
   });
 
 module.exports = ImagesRouter;

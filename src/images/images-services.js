@@ -18,6 +18,34 @@ const ImagesServices = {
       .then(([ image ]) => image)
       .then(image => ImagesServices.getById(db ,image.id));
   },
+  renameImage(db, id, newName) {
+    return db('imgages')
+      .where('images.id', id)
+      .update({
+        name: newName,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id));
+  },
+  alterLink(db, id, newLink) {
+    return db('imgages')
+      .where('images.id', id)
+      .update({
+        link: newLink,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id));
+  },
+  deleteImage(db, id) {
+    return db('images')
+      .where('images.id', id)
+      .del()
+      .returning('*');
+  }
 };
 
 module.exports = ImagesServices;
