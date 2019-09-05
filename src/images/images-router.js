@@ -46,6 +46,7 @@ ImagesRouter
   .patch(requireAuth, (req, res, next) => {
     const { id, name, link } = req.query;
     console.log('PATCH ROUTE');
+    console.log(id, name, link)
 
     if (!id) {
       return res.status(400).json({
@@ -60,9 +61,10 @@ ImagesRouter
     }
 
     let resImage = {};
-    console.log('RESIMAGE CREATED');
+    console.log('RES-IMAGE CREATED');
 
     if (name) {
+      console.log('NAME IS TRUE');
       ImagesServices.renameImage(req.app.get('db'), id, name)
         .then(image => {
           console.log('IMAGE RENAMED');
@@ -78,6 +80,7 @@ ImagesRouter
     }
 
     if (link) {
+      console.log('LINK IS TRUE');
       ImagesServices.alterLink(req.app.get('db'), id, link)
         .then(image => {
           console.log('IMAGE RELINKED');
