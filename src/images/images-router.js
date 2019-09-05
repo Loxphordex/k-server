@@ -69,7 +69,7 @@ ImagesRouter
             });
           }
 
-          resImage.name = image.name;
+          resImage = image;
         })
         .catch(next);
     }
@@ -83,12 +83,12 @@ ImagesRouter
             });
           }
 
-          resImage.link = image.link;
+          resImage = image;
         })
         .catch(next);
     }
 
-    return res.status(200).json(resImage);
+    return res.status(200).json({ resImage });
   })
   .delete(requireAuth, (req, res, next) => {
     const { id } = req.query;
