@@ -74,7 +74,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (!link) {
+    if (link) {
       ImagesServices.alterLink(req.app.get('db'), id, link)
         .then(image => {
           if (!image) {
