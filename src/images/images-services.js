@@ -19,7 +19,7 @@ const ImagesServices = {
       .then(image => ImagesServices.getById(db ,image.id));
   },
   renameImage(db, id, newName) {
-    return db('imgages')
+    return db('images')
       .where('images.id', id)
       .update({
         name: newName,
@@ -30,7 +30,7 @@ const ImagesServices = {
       .then(image => ImagesServices.getById(db, image.id));
   },
   alterLink(db, id, newLink) {
-    return db('imgages')
+    return db('images')
       .where('images.id', id)
       .update({
         link: newLink,
