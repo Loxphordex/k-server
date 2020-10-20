@@ -40,6 +40,28 @@ const ImagesServices = {
       .then(([ image ]) => image)
       .then(image => ImagesServices.getById(db, image.id));
   },
+  alterDescription(db, id, newDescription) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        description: newDescription,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
+  alterType(db, id, newType) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        type: newType,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
   deleteImage(db, id) {
     return db('images')
       .where('images.id', id)

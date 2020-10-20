@@ -20,8 +20,8 @@ ImagesRouter
       });
   })
   .post(bodyParser, requireAuth, (req, res, next) => {
-    const { url, name, link } = req.body;
-    let newImage = { url, name, link };
+    const { url, name, link, description, type } = req.body;
+    let newImage = { url, name, link, description, type };
 
     if (!newImage.url) {
       return res.status(400).json({
@@ -44,7 +44,7 @@ ImagesRouter
       .catch(next);
   })
   .patch(requireAuth, (req, res, next) => {
-    const { id, name, link } = req.query;
+    const { id, name, link, description, type } = req.query;
 
     if (!id) {
       return res.status(400).json({
@@ -52,16 +52,20 @@ ImagesRouter
       });
     }
 
-    if (!name && !link) {
+    if (!name
+      && !description
+      && !link
+      && !type) {
       return res.status(400).json({
         error: 'Missing name and link in request query'
       });
     }
 
+    const db = req.app.get('db');
     let resImage = {};
 
     if (name) {
-      ImagesServices.renameImage(req.app.get('db'), id, name)
+      ImagesServices.renameImage(db, id, name)
         .then(image => {
           if (!image) {
             return res.status(404).json({
@@ -75,11 +79,39 @@ ImagesRouter
     }
 
     if (link) {
-      ImagesServices.alterLink(req.app.get('db'), id, link)
+      ImagesServices.alterLink(db, id, link)
         .then(image => {
           if (!image) {
             return res.status(404).json({
               error: `No image with link ${link} and id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (description) {
+      ImagesServices.alterDescription(db, id, description)
+        .then(image => {
+          if (image) {
+            return res.status(404).json({
+              error: `No image with description ${description} and id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (type) {
+      ImagesServices.alterType(db, id, type)
+        .then(image => {
+          if (image) {
+            return res.status(404).json({
+              error: `No image with type ${type} and id ${id} exists`
             });
           }
 
