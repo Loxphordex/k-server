@@ -62,6 +62,61 @@ const ImagesServices = {
       .then(([ image ]) => image)
       .then(image => ImagesServices.getById(db, image.id))
   },
+  updateSizeSmall(db, id, sizeCount) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        small: sizeCount,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
+  updateSizeMedium(db, id, sizeCount) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        medium: sizeCount,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
+  updateSizeLarge(db, id, sizeCount) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        large: sizeCount,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
+  updateSizeXLarge(db, id, sizeCount) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        xlarge: sizeCount,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
+  updateSizeXXLarge(db, id, sizeCount) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        xxlarge: sizeCount,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id))
+  },
   deleteImage(db, id) {
     return db('images')
       .where('images.id', id)

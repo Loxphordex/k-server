@@ -44,7 +44,29 @@ ImagesRouter
       .catch(next);
   })
   .patch(requireAuth, (req, res, next) => {
-    const { id, name, link, description, type } = req.query;
+    const {
+      id,
+      name,
+      link,
+      description,
+      type,
+      small,
+      medium,
+      large,
+      xLarge,
+      xxLarge } = req.query;
+
+    const updateInfo = {
+      id,
+      name,
+      link,
+      description,
+      type,
+      small,
+      medium,
+      large,
+      xLarge,
+      xxLarge }
 
     if (!id) {
       return res.status(400).json({
@@ -52,12 +74,15 @@ ImagesRouter
       });
     }
 
-    if (!name
-      && !description
-      && !link
-      && !type) {
+    for (let key in updateInfo) {
+      if (!updateInfo[key]) {
+        delete updateInfo[key];
+      }
+    }
+
+    if (!updateInfo) {
       return res.status(400).json({
-        error: 'Missing name and link in request query'
+        error: 'Empty request query'
       });
     }
 
@@ -95,7 +120,7 @@ ImagesRouter
     if (description) {
       ImagesServices.alterDescription(db, id, description)
         .then(image => {
-          if (image) {
+          if (!image) {
             return res.status(404).json({
               error: `No image with description ${description} and id ${id} exists`
             });
@@ -109,9 +134,79 @@ ImagesRouter
     if (type) {
       ImagesServices.alterType(db, id, type)
         .then(image => {
-          if (image) {
+          if (!image) {
             return res.status(404).json({
               error: `No image with type ${type} and id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (small) {
+      ImagesServices.updateSizeSmall(db, id, small)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (medium) {
+      ImagesServices.updateSizeMedium(db, id, medium)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (large) {
+      ImagesServices.updateSizeLarge(db, id, large)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (xLarge) {
+      ImagesServices.updateSizeXLarge(db, id, xLarge)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (xxLarge) {
+      ImagesServices.updateSizeXXLarge(db, id, xxLarge)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
             });
           }
 
