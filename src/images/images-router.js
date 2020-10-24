@@ -50,6 +50,7 @@ ImagesRouter
       link,
       description,
       type,
+      price,
       small,
       medium,
       large,
@@ -62,6 +63,7 @@ ImagesRouter
       link,
       description,
       type,
+      price,
       small,
       medium,
       large,
@@ -138,6 +140,20 @@ ImagesRouter
             return res.status(404).json({
               error: `No image with type ${type} and id ${id} exists`
             });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (price) {
+      ImagesServices.alterPrice(db, id, price)
+        .then(image => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            })
           }
 
           resImage = image;

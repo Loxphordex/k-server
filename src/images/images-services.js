@@ -49,7 +49,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
   },
   alterType(db, id, newType) {
     return db('images')
@@ -60,7 +60,18 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
+  },
+  alterPrice(db, id, newPrice) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        price: newPrice,
+        thisKeyIsSkipped: undefined,
+      })
+      .returning('*')
+      .then(([ image ]) => image)
+      .then(image => ImagesServices.getById(db, image.id));
   },
   updateSizeSmall(db, id, sizeCount) {
     return db('images')
@@ -71,7 +82,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
   },
   updateSizeMedium(db, id, sizeCount) {
     return db('images')
@@ -82,7 +93,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
   },
   updateSizeLarge(db, id, sizeCount) {
     return db('images')
@@ -93,7 +104,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
   },
   updateSizeXLarge(db, id, sizeCount) {
     return db('images')
@@ -104,7 +115,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
   },
   updateSizeXXLarge(db, id, sizeCount) {
     return db('images')
@@ -115,7 +126,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id))
+      .then(image => ImagesServices.getById(db, image.id));
   },
   deleteImage(db, id) {
     return db('images')
