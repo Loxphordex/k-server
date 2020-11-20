@@ -15,118 +15,118 @@ const ImagesServices = {
       .insert(image)
       .into('images')
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db ,image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   renameImage(db, id, newName) {
     return db('images')
       .where('images.id', id)
       .update({
         name: newName,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   alterLink(db, id, newLink) {
     return db('images')
       .where('images.id', id)
       .update({
         link: newLink,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   alterDescription(db, id, newDescription) {
     return db('images')
       .where('images.id', id)
       .update({
         description: newDescription,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   alterType(db, id, newType) {
     return db('images')
       .where('images.id', id)
       .update({
         type: newType,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   alterPrice(db, id, newPrice) {
     return db('images')
       .where('images.id', id)
       .update({
         price: newPrice,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   updateSizeSmall(db, id, sizeCount) {
     return db('images')
       .where('images.id', id)
       .update({
         small: sizeCount,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   updateSizeMedium(db, id, sizeCount) {
     return db('images')
       .where('images.id', id)
       .update({
         medium: sizeCount,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   updateSizeLarge(db, id, sizeCount) {
     return db('images')
       .where('images.id', id)
       .update({
         large: sizeCount,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   updateSizeXLarge(db, id, sizeCount) {
     return db('images')
       .where('images.id', id)
       .update({
         xlarge: sizeCount,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   updateSizeXXLarge(db, id, sizeCount) {
     return db('images')
       .where('images.id', id)
       .update({
         xxlarge: sizeCount,
-        thisKeyIsSkipped: undefined,
+        thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([ image ]) => image)
-      .then(image => ImagesServices.getById(db, image.id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   deleteImage(db, id) {
     return db('images')
