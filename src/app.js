@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', AuthRouter);
 app.use('/api', ImagesRouter);
-app.use('/pay', PaymentRouter);
+app.use('/api/pay', PaymentRouter);
 
 app.use((error, req, res, next) => {
   let response;

@@ -5,6 +5,7 @@ const bodyParser = express.json();
 const path = require('path');
 const requireAuth = require('../middleware/jwt-auth');
 const ImagesServices = require('./images-services');
+const sizeChart = require('../constants/sizeChart');
 
 ImagesRouter
   .route('/images')
@@ -166,75 +167,103 @@ ImagesRouter
         .catch(next);
     }
 
-    if (small) {
-      ImagesServices.updateSizeSmall(db, id, small)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    sizeChart.forEach((size) => {
+      if (updateInfo[size]) {
+        ImagesServices.updateSize(db, id, size, updateInfo[size])
+          .then((image) => {
+            if (!image) {
+              return res.status(404).json({
+                error: `No image with id ${id} exists`
+              });
+            }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+            resImage = image;
+          })
+          .catch(next);
+      }
+    });
 
-    if (medium) {
-      ImagesServices.updateSizeMedium(db, id, medium)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (small) {
+    //   ImagesServices.updateSizeSmall(db, id, small)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (large) {
-      ImagesServices.updateSizeLarge(db, id, large)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (medium) {
+    //   ImagesServices.updateSizeMedium(db, id, medium)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (xLarge) {
-      ImagesServices.updateSizeXLarge(db, id, xLarge)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (large) {
+    //   ImagesServices.updateSizeLarge(db, id, large)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (xxLarge) {
-      ImagesServices.updateSizeXXLarge(db, id, xxLarge)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (xLarge) {
+    //   ImagesServices.updateSizeXLarge(db, id, xLarge)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
+
+    // if (xxLarge) {
+    //   ImagesServices.updateSizeXXLarge(db, id, xxLarge)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
+
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
+
+    resImage.availableSizes = {
+      small,
+      medium,
+      large,
+      xLarge,
+      xxLarge
+    };
+
+    sizeChart.forEach((size) => {
+      delete resImage[size];
+    });
 
     return res.status(200).json({ resImage });
   })

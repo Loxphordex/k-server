@@ -73,6 +73,17 @@ const ImagesServices = {
       .then(([image]) => image)
       .then((image) => ImagesServices.getById(db, image.id));
   },
+  updateSize(db, id, size, count) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        [size]: count,
+        thisKeyIsSkipped: undefined
+      })
+      .returning('*')
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
+  },
   updateSizeSmall(db, id, sizeCount) {
     return db('images')
       .where('images.id', id)
