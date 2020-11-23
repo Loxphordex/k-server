@@ -9,6 +9,7 @@ const app = express();
 
 const AuthRouter = require('./auth/auth-router');
 const ImagesRouter = require('./images/images-router');
+const PaymentRouter = require('./payment/payment-router');
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -24,17 +25,19 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', AuthRouter);
 app.use('/api', ImagesRouter);
+app.use('/api/pay', PaymentRouter);
 
-app.use(function errorHandler(error, req, res, next) {
+app.use((error, req, res, next) => {
   let response;
-  //
-  // if (NODE_ENV === 'production') {
-  //   response = { error: {message: 'server error' }};
-  // } else {
-  //   console.error(error);
-  //   response = { message: error.message, error };
-  // }
-  response = { error: {message: error.message, error} };
+
+  if (NODE_ENV === 'production') {
+    response = { error: { message: 'server error' } };
+  }
+  else {
+    console.error(error);
+    response = { message: error.message, error };
+  }
+  response = { error: { message: error.message, error } };
   res.status(500).json(response);
 });
 

@@ -1,15 +1,17 @@
 const express = require('express');
+
 const ImagesRouter = express.Router();
 const bodyParser = express.json();
+const path = require('path');
 const requireAuth = require('../middleware/jwt-auth');
 const ImagesServices = require('./images-services');
-const path = require('path');
+const sizeChart = require('../constants/sizeChart');
 
 ImagesRouter
   .route('/images')
   .get((req, res) => {
     ImagesServices.getAllImages(req.app.get('db'))
-      .then(images => {
+      .then((images) => {
         if (!images) {
           return res.status(500).json({
             error: 'Missing images in database'
@@ -20,8 +22,12 @@ ImagesRouter
       });
   })
   .post(bodyParser, requireAuth, (req, res, next) => {
-    const { url, name, link, description, type } = req.body;
-    let newImage = { url, name, link, description, type };
+    const {
+      url, name, link, description, type
+    } = req.body;
+    const newImage = {
+      url, name, link, description, type
+    };
 
     if (!newImage.url) {
       return res.status(400).json({
@@ -29,18 +35,16 @@ ImagesRouter
       });
     }
 
-    for (let key in newImage) {
+    for (const key in newImage) {
       if (!newImage[key]) {
         delete newImage[key];
       }
     }
 
     ImagesServices.insertImage(req.app.get('db'), newImage)
-      .then(dbImage => {
-        return res.status(201)
-          .location(path.posix.join(req.originalUrl, `/${dbImage.id}`))
-          .json({ dbImage });
-      })
+      .then((dbImage) => res.status(201)
+        .location(path.posix.join(req.originalUrl, `/${dbImage.id}`))
+        .json({ dbImage }))
       .catch(next);
   })
   .patch(requireAuth, (req, res, next) => {
@@ -55,7 +59,8 @@ ImagesRouter
       medium,
       large,
       xLarge,
-      xxLarge } = req.query;
+      xxLarge
+    } = req.query;
 
     const updateInfo = {
       id,
@@ -68,7 +73,8 @@ ImagesRouter
       medium,
       large,
       xLarge,
-      xxLarge }
+      xxLarge
+    };
 
     if (!id) {
       return res.status(400).json({
@@ -76,7 +82,7 @@ ImagesRouter
       });
     }
 
-    for (let key in updateInfo) {
+    for (const key in updateInfo) {
       if (!updateInfo[key]) {
         delete updateInfo[key];
       }
@@ -93,7 +99,7 @@ ImagesRouter
 
     if (name) {
       ImagesServices.renameImage(db, id, name)
-        .then(image => {
+        .then((image) => {
           if (!image) {
             return res.status(404).json({
               error: `No image with name ${name} and id ${id} exists`
@@ -107,7 +113,7 @@ ImagesRouter
 
     if (link) {
       ImagesServices.alterLink(db, id, link)
-        .then(image => {
+        .then((image) => {
           if (!image) {
             return res.status(404).json({
               error: `No image with link ${link} and id ${id} exists`
@@ -121,7 +127,7 @@ ImagesRouter
 
     if (description) {
       ImagesServices.alterDescription(db, id, description)
-        .then(image => {
+        .then((image) => {
           if (!image) {
             return res.status(404).json({
               error: `No image with description ${description} and id ${id} exists`
@@ -135,7 +141,7 @@ ImagesRouter
 
     if (type) {
       ImagesServices.alterType(db, id, type)
-        .then(image => {
+        .then((image) => {
           if (!image) {
             return res.status(404).json({
               error: `No image with type ${type} and id ${id} exists`
@@ -149,21 +155,7 @@ ImagesRouter
 
     if (price) {
       ImagesServices.alterPrice(db, id, price)
-        .then(image => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            })
-          }
-
-          resImage = image;
-        })
-        .catch(next);
-    }
-
-    if (small) {
-      ImagesServices.updateSizeSmall(db, id, small)
-        .then(image => {
+        .then((image) => {
           if (!image) {
             return res.status(404).json({
               error: `No image with id ${id} exists`
@@ -175,61 +167,103 @@ ImagesRouter
         .catch(next);
     }
 
-    if (medium) {
-      ImagesServices.updateSizeMedium(db, id, medium)
-        .then(image => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    sizeChart.forEach((size) => {
+      if (updateInfo[size]) {
+        ImagesServices.updateSize(db, id, size, updateInfo[size])
+          .then((image) => {
+            if (!image) {
+              return res.status(404).json({
+                error: `No image with id ${id} exists`
+              });
+            }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+            resImage = image;
+          })
+          .catch(next);
+      }
+    });
 
-    if (large) {
-      ImagesServices.updateSizeLarge(db, id, large)
-        .then(image => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (small) {
+    //   ImagesServices.updateSizeSmall(db, id, small)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (xLarge) {
-      ImagesServices.updateSizeXLarge(db, id, xLarge)
-        .then(image => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (medium) {
+    //   ImagesServices.updateSizeMedium(db, id, medium)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (xxLarge) {
-      ImagesServices.updateSizeXXLarge(db, id, xxLarge)
-        .then(image => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (large) {
+    //   ImagesServices.updateSizeLarge(db, id, large)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
+
+    // if (xLarge) {
+    //   ImagesServices.updateSizeXLarge(db, id, xLarge)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
+
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
+
+    // if (xxLarge) {
+    //   ImagesServices.updateSizeXXLarge(db, id, xxLarge)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
+
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
+
+    resImage.availableSizes = {
+      small,
+      medium,
+      large,
+      xLarge,
+      xxLarge
+    };
+
+    sizeChart.forEach((size) => {
+      delete resImage[size];
+    });
 
     return res.status(200).json({ resImage });
   })
@@ -243,7 +277,7 @@ ImagesRouter
     }
 
     ImagesServices.deleteImage(req.app.get('db'), id)
-      .then(imageId => {
+      .then((imageId) => {
         if (!imageId) {
           return res.status(404).json({
             error: `No image with id ${id} exists`

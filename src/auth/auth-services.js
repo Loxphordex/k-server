@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const xss  = require('xss');
+const xss = require('xss');
 const config = require('../config');
 
 const AuthServices = {
@@ -16,28 +16,26 @@ const AuthServices = {
     return db('users')
       .where({ username })
       .first()
-      .then(user => !!user);
+      .then((user) => !!user);
   },
 
   hashPassword(password) {
     return bcrypt.hash(password, 12);
   },
-  
+
   insertUser(db, newUser) {
     return db
       .insert(newUser)
       .into('users')
       .returning('*')
       .then(([user]) => user)
-      .then(user => {
-        return AuthServices.getById(db, user.id);
-      });
+      .then((user) => AuthServices.getById(db, user.id));
   },
 
   serializeUser(user) {
     return {
       id: user.id,
-      username: xss(user.username),
+      username: xss(user.username)
     };
   },
 
@@ -61,7 +59,7 @@ const AuthServices = {
 
   verifyJwt(token) {
     return jwt.verify(token, config.JWT_SECRET, {
-      algorithms: ['HS256'],
+      algorithms: ['HS256']
     });
   },
 

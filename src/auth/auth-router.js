@@ -1,7 +1,9 @@
 const express = require('express');
+
 const AuthRouter = express.Router();
-const AuthServices = require('./auth-services');
 const path = require('path');
+const AuthServices = require('./auth-services');
+
 const bodyParser = express.json();
 
 // AuthRouter
@@ -16,8 +18,8 @@ const bodyParser = express.json();
 
 //     for (const [key, value] of Object.entries(newUser)) {
 //       if (!value) {
-//         return res.status(400).json({ 
-//           error: `Missing ${key} in request body` 
+//         return res.status(400).json({
+//           error: `Missing ${key} in request body`
 //         });
 //       }
 //     }
@@ -55,7 +57,7 @@ AuthRouter
     }
 
     AuthServices.getUserWithUsername(req.app.get('db'), userLogin.username)
-      .then(dbUser => {
+      .then((dbUser) => {
         if (!dbUser) {
           return res.status(400).json({
             error: 'Incorrect username or password'
@@ -63,7 +65,7 @@ AuthRouter
         }
 
         return AuthServices.comparePasswords(userLogin.password, dbUser.password)
-          .then(match => {
+          .then((match) => {
             if (!match) {
               return res.json(400).json({
                 error: 'Incorrect username or password'
@@ -77,9 +79,8 @@ AuthRouter
               authToken: AuthServices.createJwt(sub, payload)
             });
           });
-
       })
-      .catch(err =>{
+      .catch((err) => {
         console.error(err);
         next();
       });
