@@ -213,8 +213,9 @@ function mapSizesToObject(image) {
   const newImage = image;
   newImage.availableSizes = {};
   sizeChart.forEach((size) => {
-    newImage.availableSizes[size] = newImage[size];
-    delete newImage[size];
+    const lowerSize = size.toLowerCase();
+    newImage.availableSizes[lowerSize] = newImage[lowerSize];
+    delete newImage[lowerSize];
   });
   return newImage;
 }
