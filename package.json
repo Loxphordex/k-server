@@ -58,6 +58,9 @@
         ],
         "no-restricted-syntax": [
             "warn"
+        ],
+        "no-use-before-define": [
+            "warn"
         ]
     }
   },
