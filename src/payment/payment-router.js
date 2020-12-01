@@ -10,12 +10,14 @@ const PaymentRouter = express.Router();
 // * return size info
 
 PaymentRouter
-  .route('/')
+  .route('/create-session')
   .post(async (req, res, next) => {
-    stripe.paymentIntents.create({
-      payment_method_types: req.paymentMethodTypes,
+    const { receiptEmail } = req.body;
+
+    stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
       line_items: await mapCartToLineItems(req),
-      receipt_email: req.receiptEmail,
+      receipt_email: receiptEmail,
       mode: 'payment',
       success_url: `${config.TEST_CLIENT_URL}/confirm?success=true`,
       cancel_url: `${config.TEST_CLIENT_URL}/confirm?canceled=true`
