@@ -18,7 +18,8 @@ ImagesRouter
           });
         }
 
-        return res.json({ images });
+        const mappedImages = images.map((image) => mapSizesToObject(image));
+        return res.json({ mappedImages });
       });
   })
   .post(bodyParser, requireAuth, (req, res, next) => {
@@ -183,88 +184,7 @@ ImagesRouter
       }
     });
 
-    // if (small) {
-    //   ImagesServices.updateSizeSmall(db, id, small)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
-
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
-
-    // if (medium) {
-    //   ImagesServices.updateSizeMedium(db, id, medium)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
-
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
-
-    // if (large) {
-    //   ImagesServices.updateSizeLarge(db, id, large)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
-
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
-
-    // if (xLarge) {
-    //   ImagesServices.updateSizeXLarge(db, id, xLarge)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
-
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
-
-    // if (xxLarge) {
-    //   ImagesServices.updateSizeXXLarge(db, id, xxLarge)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
-
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
-
-    resImage.availableSizes = {
-      small,
-      medium,
-      large,
-      xLarge,
-      xxLarge
-    };
-
-    sizeChart.forEach((size) => {
-      delete resImage[size];
-    });
-
+    mapSizesToObject(resImage);
     return res.status(200).json({ resImage });
   })
   .delete(requireAuth, (req, res, next) => {
@@ -288,5 +208,16 @@ ImagesRouter
       })
       .catch(next);
   });
+
+function mapSizesToObject(image) {
+  const newImage = image;
+  newImage.availableSizes = {};
+  sizeChart.forEach((size) => {
+    const lowerSize = size.toLowerCase();
+    newImage.availableSizes[lowerSize] = newImage[lowerSize];
+    delete newImage[lowerSize];
+  });
+  return newImage;
+}
 
 module.exports = ImagesRouter;
