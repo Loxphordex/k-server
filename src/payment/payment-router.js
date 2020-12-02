@@ -16,10 +16,27 @@ PaymentRouter
   }))
   .post(async (req, res, next) => {
     const { receiptEmail } = req.body;
+    let lineItems = [];
+    try {
+      lineItems = await mapCartToLineItems(req);
+    }
+
+    catch (error) {
+      return res.json(400).json({
+        message: 'failed to get line items',
+        error
+      });
+    }
+
+    if (!lineItems || lineItems.length === 0) {
+      return res.json(404).json({
+        message: 'failed to find line items'
+      });
+    }
 
     stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: await mapCartToLineItems(req),
+      line_items: lineItems,
       receipt_email: receiptEmail,
       mode: 'payment',
       success_url: `${config.TEST_CLIENT_URL}/confirm?success=true`,
