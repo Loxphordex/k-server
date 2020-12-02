@@ -15,6 +15,14 @@ PaymentRouter
     message: 'create-session request successful'
   }))
   .post(async (req, res, next) => {
+    if (!req) {
+      return res.status(400).json({ message: 'no request sent' });
+    }
+
+    if (!req.body) {
+      return res.status(400).json({ message: 'no request body sent' });
+    }
+
     const { receiptEmail } = req.body;
     let lineItems = [];
 
