@@ -3,6 +3,7 @@ const config = require('../config');
 const stripe = require('stripe')(config.SECRET_PAY_KEY);
 const mapCartToLineItems = require('./helpers');
 
+const bodyParser = express.json();
 const PaymentRouter = express.Router();
 
 // todo
@@ -14,7 +15,7 @@ PaymentRouter
   .get((req, res) => res.status(200).json({
     message: 'create-session request successful'
   }))
-  .post(async (req, res, next) => {
+  .post(bodyParser, async (req, res, next) => {
     if (!req) {
       return res.status(400).json({ message: 'no request sent' });
     }
