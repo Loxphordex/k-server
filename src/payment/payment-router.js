@@ -11,7 +11,7 @@ const PaymentRouter = express.Router();
 
 PaymentRouter
   .route('/create-session')
-  .get((req, res) => res.json(200).json({
+  .get((req, res) => res.status(200).json({
     message: 'create-session request successful'
   }))
   .post(async (req, res, next) => {
@@ -22,14 +22,14 @@ PaymentRouter
     }
 
     catch (error) {
-      return res.json(400).json({
+      return res.status(400).json({
         message: 'failed to get line items',
         error
       });
     }
 
     if (!lineItems || lineItems.length === 0) {
-      return res.json(404).json({
+      return res.status(404).json({
         message: 'failed to find line items'
       });
     }
@@ -43,19 +43,19 @@ PaymentRouter
       cancel_url: `${config.TEST_CLIENT_URL}/confirm?canceled=true`
     }).then((session) => {
       if (!session) {
-        return res.json(400).json({
+        return res.status(400).json({
           error: 'No payment intent returned'
         });
       }
 
       if (!session.id) {
-        return res.json(400).json({
+        return res.status(400).json({
           error: 'No session id',
           session
         });
       }
 
-      return res.json({ id: session.id });
+      return res.status(200).json({ id: session.id });
     }).catch((err) => {
       console.error(err);
       next();
