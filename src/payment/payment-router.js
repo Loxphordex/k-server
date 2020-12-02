@@ -17,12 +17,20 @@ PaymentRouter
   .post(async (req, res, next) => {
     const { receiptEmail } = req.body;
     let lineItems = [];
+
+    if (!receiptEmail) {
+      return res.status(400).json({
+        message: 'failed to destructure receiptEmail from request body',
+        body: req.body
+      });
+    }
+
     try {
       lineItems = await mapCartToLineItems(req);
     }
 
     catch (error) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: 'failed to get line items',
         error
       });
@@ -43,13 +51,13 @@ PaymentRouter
       cancel_url: `${config.TEST_CLIENT_URL}/confirm?canceled=true`
     }).then((session) => {
       if (!session) {
-        return res.status(400).json({
+        return res.status(404).json({
           error: 'No payment intent returned'
         });
       }
 
       if (!session.id) {
-        return res.status(400).json({
+        return res.status(404).json({
           error: 'No session id',
           session
         });
