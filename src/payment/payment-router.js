@@ -11,6 +11,9 @@ const PaymentRouter = express.Router();
 
 PaymentRouter
   .route('/create-session')
+  .get((req, res) => res.json(200).json({
+    message: 'create-session request successful'
+  }))
   .post(async (req, res, next) => {
     const { receiptEmail } = req.body;
 
