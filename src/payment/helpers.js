@@ -7,7 +7,7 @@ async function mapCartToLineItems(req) {
   if (cart) {
     cart.forEach(async (item) => {
       const image = await ImagesServices.getById(req.app.get('db'), item.id);
-      console.log(image);
+      console.log('image: ', image);
       if (image) {
         const itemObj = {
           price_data: {
@@ -21,6 +21,7 @@ async function mapCartToLineItems(req) {
           quantity: item.count
         };
 
+        console.log('itemObj', itemObj);
         lineItems.push(itemObj);
       }
       else {
@@ -29,7 +30,7 @@ async function mapCartToLineItems(req) {
     });
   }
 
-  console.log(lineItems);
+  console.log('lineItems: ', lineItems);
   return lineItems;
 }
 

@@ -47,7 +47,8 @@ PaymentRouter
 
     if (!lineItems || lineItems.length === 0) {
       return res.status(404).json({
-        message: 'failed to find line items'
+        message: 'failed to find line items',
+        lineItems
       });
     }
 
