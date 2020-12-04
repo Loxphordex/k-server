@@ -29,6 +29,9 @@ async function mapCartToLineItems(req) {
       }
     });
   }
+  else {
+    console.log('No cart found');
+  }
 
   console.log('lineItems: ', lineItems);
   return lineItems;

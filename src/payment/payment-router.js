@@ -25,23 +25,12 @@ PaymentRouter
     }
 
     const { receiptEmail } = req.body;
-    let lineItems = [];
+    const lineItems = await mapCartToLineItems(req);
 
     if (!receiptEmail) {
       return res.status(400).json({
         message: 'failed to destructure receiptEmail from request body',
         body: req.body
-      });
-    }
-
-    try {
-      lineItems = await mapCartToLineItems(req);
-    }
-
-    catch (error) {
-      return res.status(404).json({
-        message: 'failed to get line items',
-        error
       });
     }
 
