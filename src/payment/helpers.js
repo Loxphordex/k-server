@@ -1,11 +1,10 @@
 const ImagesServices = require('../images/images-services');
 
 async function mapCartToLineItems(req) {
-  const lineItems = [];
   const { cart, currency } = req.body;
 
-  if (cart) {
-    await cart.forEach(async (item) => {
+  if (cart && currency) {
+    const lineItems = await Promise.all(cart.map(async (item) => {
       const image = await ImagesServices.getById(req.app.get('db'), item.id);
       console.log('image: ', image);
       if (image) {
@@ -22,19 +21,14 @@ async function mapCartToLineItems(req) {
         };
 
         console.log('itemObj', itemObj);
-        lineItems.push(itemObj);
       }
       else {
         console.log('No image found', item.id);
       }
-    });
-  }
-  else {
-    console.log('No cart found');
-  }
+    }));
 
-  console.log('lineItems: ', lineItems);
-  return lineItems;
+    return lineItems;
+  }
 }
 
 module.exports = mapCartToLineItems;
