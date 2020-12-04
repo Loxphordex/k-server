@@ -5,7 +5,7 @@ async function mapCartToLineItems(req) {
   const { cart, currency } = req.body;
 
   if (cart) {
-    cart.forEach(async (item) => {
+    await cart.forEach(async (item) => {
       const image = await ImagesServices.getById(req.app.get('db'), item.id);
       console.log('image: ', image);
       if (image) {
