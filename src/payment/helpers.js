@@ -1,5 +1,14 @@
 const ImagesServices = require('../images/images-services');
 
+function formatUnitAmount(price) {
+  // Stripe requires prices to be formatted with integers,
+  // so $27.99 will have to be 2799
+  const priceWithoutDecimal = String(price).replace('.', '');
+  const formattedPriceString = `${priceWithoutDecimal}00`;
+  const formattedPriceInt = parseInt(formattedPriceString, 10);
+  return formattedPriceInt;
+}
+
 async function mapCartToLineItems(req) {
   const { cart, currency } = req.body;
 
@@ -13,7 +22,7 @@ async function mapCartToLineItems(req) {
             name: image.name,
             images: [image.url]
           },
-          unit_amount: image.price
+          unit_amount: formatUnitAmount(image.price)
         },
         quantity: item.count
       };
