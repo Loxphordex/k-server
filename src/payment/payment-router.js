@@ -25,6 +25,7 @@ PaymentRouter
     }
 
     const lineItems = await mapCartToLineItems(req);
+    console.log('lineItems: ', lineItems);
 
     if (!lineItems || lineItems.length === 0) {
       return res.status(404).json({
