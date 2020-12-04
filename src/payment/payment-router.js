@@ -24,15 +24,7 @@ PaymentRouter
       return res.status(400).json({ message: 'no request body sent' });
     }
 
-    const { receiptEmail } = req.body;
     const lineItems = await mapCartToLineItems(req);
-
-    if (!receiptEmail) {
-      return res.status(400).json({
-        message: 'failed to destructure receiptEmail from request body',
-        body: req.body
-      });
-    }
 
     if (!lineItems || lineItems.length === 0) {
       return res.status(404).json({
@@ -44,7 +36,6 @@ PaymentRouter
     stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
-      receipt_email: receiptEmail,
       mode: 'payment',
       success_url: `${config.TEST_CLIENT_URL}/confirm?success=true`,
       cancel_url: `${config.TEST_CLIENT_URL}/confirm?canceled=true`
