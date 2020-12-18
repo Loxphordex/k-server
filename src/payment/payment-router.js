@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('../config');
 const stripe = require('stripe')(config.SECRET_PAY_KEY);
 const mapCartToLineItems = require('./helpers');
+const webHookParser = require('body-parser');
 
 const bodyParser = express.json();
 const PaymentRouter = express.Router();
@@ -59,6 +60,16 @@ PaymentRouter
       console.error(err);
       next();
     });
+  });
+
+PaymentRouter
+  .route('/webhook')
+  .post(webHookParser.raw({ type: 'application/json' }), (req, res) => {
+    const payload = req.body;
+
+    console.log('Got payload', payload);
+
+    res.status(200);
   });
 
 module.exports = PaymentRouter;
