@@ -1,15 +1,13 @@
 const express = require('express');
+const app = require('../app');
 const config = require('../config');
 const stripe = require('stripe')(config.SECRET_PAY_KEY);
 const mapCartToLineItems = require('./helpers');
 const webHookParser = require('body-parser');
+const mailer = require('express-mailer');
 
 const bodyParser = express.json();
 const PaymentRouter = express.Router();
-
-// todo
-// * check if sizes are available
-// * return size info
 
 PaymentRouter
   .route('/create-session')
@@ -53,6 +51,19 @@ PaymentRouter
           session
         });
       }
+
+      // send email to dispatch order
+      mailer.extend(app, {
+        from: 'test.monkey.loxphordex@gmail.com',
+        host: 'smtp.gmail.com',
+        secureConnection: true,
+        port: 456,
+        transportMethod: 'SMTP',
+        auth: {
+          user: 'test.monkey.loxphordex@gmail.com',
+          pass: config.EMAIL_PASSWORD
+        }
+      });
 
       return res.status(200).json({ id: session.id });
     }).catch((err) => {

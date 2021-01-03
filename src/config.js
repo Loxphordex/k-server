@@ -7,5 +7,6 @@ module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRY: process.env.JWT_EXPIRY,
   SECRET_PAY_KEY: process.env.SECRET_PAY_KEY,
-  SIGNING_SECRET: process.env.SIGNING_SECRET
+  SIGNING_SECRET: process.env.SIGNING_SECRET,
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD
 };
