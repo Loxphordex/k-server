@@ -65,6 +65,17 @@ PaymentRouter
   .route('/webhook')
   .post(webHookParser.raw({ type: 'application/json' }), (req, res) => {
     const payload = req.body;
+    const webhookEndpointSecret = config.SIGNING_SECRET;
+    const sig = req.headers['stripe-signature'];
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(payload, sig, webhookEndpointSecret);
+    }
+    catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
 
     console.log('Got payload', payload);
 

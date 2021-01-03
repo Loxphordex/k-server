@@ -170,7 +170,7 @@ ImagesRouter
 
     sizeChart.forEach((size) => {
       if (updateInfo[size]) {
-        ImagesServices.updateSize(db, id, size, updateInfo[size])
+        ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
           .then((image) => {
             if (!image) {
               return res.status(404).json({

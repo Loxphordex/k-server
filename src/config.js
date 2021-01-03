@@ -6,5 +6,6 @@ module.exports = {
   DATABASE_URL: process.env.DATABASE_URL,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRY: process.env.JWT_EXPIRY,
-  SECRET_PAY_KEY: process.env.SECRET_PAY_KEY
+  SECRET_PAY_KEY: process.env.SECRET_PAY_KEY,
+  SIGNING_SECRET: process.env.SIGNING_SECRET
 };
