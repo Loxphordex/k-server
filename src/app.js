@@ -24,7 +24,7 @@ app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
 
-app.set('views', './templates');
+app.set('views', 'src/templates');
 app.set('view engine', 'jade');
 
 app.get('/', (req, res) => {
