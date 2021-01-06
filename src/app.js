@@ -70,7 +70,7 @@ app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), 
       subject: 'TEST'
     }, (err) => {
       if (err) {
-        console.log(err);
+        console.log(`Email error: ${err}`);
         return res.status(500).json({ error: 'Email confirmation failed' });
       }
 
