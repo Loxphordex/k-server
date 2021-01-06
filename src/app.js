@@ -24,6 +24,9 @@ app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
 
+app.set('views', './templates');
+app.set('view engine', 'jade');
+
 app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
@@ -62,7 +65,7 @@ app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), 
     console.log('session: ', session);
 
     // send email to dispatch order
-    app.mailer.send('email', {
+    app.mailer.send('testTemplate', {
       to: 'test.monkey.loxphordex@gmail.com',
       subject: 'TEST'
     }, (err) => {
@@ -70,6 +73,8 @@ app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), 
         console.log(err);
         return res.status(500).json({ error: 'Email confirmation failed' });
       }
+
+      res.send('Email sent');
     });
   }
 
