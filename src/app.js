@@ -3,13 +3,17 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { NODE_ENV } = require('./config');
+const mailer = require('express-mailer');
+const {
+  NODE_ENV, EMAIL_PASSWORD, SECRET_PAY_KEY, SIGNING_SECRET
+} = require('./config');
 
 const app = express();
 
 const AuthRouter = require('./auth/auth-router');
 const ImagesRouter = require('./images/images-router');
 const PaymentRouter = require('./payment/payment-router');
+const stripe = require('stripe')(SECRET_PAY_KEY);
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -23,9 +27,55 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
+mailer.extend(app, {
+  from: 'test.monkey.loxphordex@gmail.com',
+  host: 'smtp.gmail.com',
+  secureConnection: true,
+  port: 456,
+  transportMethod: 'SMTP',
+  auth: {
+    user: 'test.monkey.loxphordex@gmail.com',
+    pass: EMAIL_PASSWORD
+  }
+});
+
 app.use('/api', ImagesRouter);
 app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
+app.post('/api/email/webhook', (req, res, next) => {
+  const payload = req.body;
+  const webhookEndpointSecret = SIGNING_SECRET;
+  const sig = req.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(payload, sig, webhookEndpointSecret);
+  }
+  catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    console.log('session: ', session);
+
+    // send email to dispatch order
+    app.mailer.send('email', {
+      to: 'test.monkey.loxphordex@gmail.com',
+      subject: 'TEST'
+    }, (err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ error: 'Email confirmation failed' });
+      }
+    });
+  }
+
+  console.log('Got payload', payload);
+
+  res.status(200);
+});
 
 app.use((error, req, res, next) => {
   let response;

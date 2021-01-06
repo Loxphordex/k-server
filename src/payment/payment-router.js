@@ -1,25 +1,11 @@
 const express = require('express');
-const app = require('../app');
 const config = require('../config');
 const stripe = require('stripe')(config.SECRET_PAY_KEY);
 const mapCartToLineItems = require('./helpers');
 const webHookParser = require('body-parser');
-const mailer = require('express-mailer');
 
 const bodyParser = express.json();
 const PaymentRouter = express.Router();
-
-// mailer.extend(app, {
-//   from: 'test.monkey.loxphordex@gmail.com',
-//   host: 'smtp.gmail.com',
-//   secureConnection: true,
-//   port: 456,
-//   transportMethod: 'SMTP',
-//   auth: {
-//     user: 'test.monkey.loxphordex@gmail.com',
-//     pass: config.EMAIL_PASSWORD
-//   }
-// });
 
 PaymentRouter
   .route('/create-session')
@@ -90,17 +76,6 @@ PaymentRouter
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       console.log('session: ', session);
-
-      // send email to dispatch order
-      // mailer.send('email', {
-      //   to: 'test.monkey.loxphordex@gmail.com',
-      //   subject: 'TEST'
-      // }, (err) => {
-      //   if (err) {
-      //     console.log(err);
-      //     return res.status(500).json({ error: 'Email confirmation failed' });
-      //   }
-      // });
     }
 
     console.log('Got payload', payload);
