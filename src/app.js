@@ -1,9 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const mailer = require('express-mailer');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { NODE_ENV } = require('./config');
+const { NODE_ENV, EMAIL_PASSWORD } = require('./config');
 
 const app = express();
 
@@ -18,6 +19,18 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
+
+mailer.extend(app, {
+  from: 'test.monkey.loxphordex@gmail.com',
+  host: 'smtp.gmail.com',
+  secureConnection: true,
+  port: 456,
+  transportMethod: 'SMTP',
+  auth: {
+    user: 'test.monkey.loxphordex@gmail.com',
+    pass: EMAIL_PASSWORD
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');

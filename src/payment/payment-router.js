@@ -4,7 +4,6 @@ const config = require('../config');
 const stripe = require('stripe')(config.SECRET_PAY_KEY);
 const mapCartToLineItems = require('./helpers');
 const webHookParser = require('body-parser');
-const mailer = require('express-mailer');
 
 const bodyParser = express.json();
 const PaymentRouter = express.Router();
@@ -52,19 +51,6 @@ PaymentRouter
         });
       }
 
-      // send email to dispatch order
-      mailer.extend(app, {
-        from: 'test.monkey.loxphordex@gmail.com',
-        host: 'smtp.gmail.com',
-        secureConnection: true,
-        port: 456,
-        transportMethod: 'SMTP',
-        auth: {
-          user: 'test.monkey.loxphordex@gmail.com',
-          pass: config.EMAIL_PASSWORD
-        }
-      });
-
       return res.status(200).json({ id: session.id });
     }).catch((err) => {
       console.error(err);
@@ -86,6 +72,21 @@ PaymentRouter
     }
     catch (err) {
       return res.status(400).json({ error: err.message });
+    }
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+
+      // send email to dispatch order
+      app.mailer.send('email', {
+        to: 'test.monkey.loxphordex@gmail.com',
+        subject: 'TEST'
+      }, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: 'Email confirmation failed' });
+        }
+      });
     }
 
     console.log('Got payload', payload);
