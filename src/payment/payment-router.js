@@ -76,6 +76,7 @@ PaymentRouter
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
+      console.log('session: ', session);
 
       // send email to dispatch order
       app.mailer.send('email', {
