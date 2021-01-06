@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const mailer = require('express-mailer');
+const webHookParser = require('body-parser');
 const {
   NODE_ENV, EMAIL_PASSWORD, SECRET_PAY_KEY, SIGNING_SECRET
 } = require('./config');
@@ -42,7 +43,7 @@ mailer.extend(app, {
 app.use('/api', ImagesRouter);
 app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
-app.post('/api/email/webhook', (req, res, next) => {
+app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), (req, res, next) => {
   const payload = req.body;
   const webhookEndpointSecret = SIGNING_SECRET;
   const sig = req.headers['stripe-signature'];
