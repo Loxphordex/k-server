@@ -62,7 +62,6 @@ app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), 
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    console.log('session: ', session);
 
     // send email to dispatch order
     app.mailer.send('testTemplate', {
@@ -78,7 +77,7 @@ app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), 
 
   console.log('Got payload', payload);
 
-  res.status(200);
+  return res.status(200);
 });
 
 app.use((error, req, res, next) => {
