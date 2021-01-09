@@ -176,7 +176,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (category) {
+    if (category !== undefined) {
       ImagesServices.alterCategory(db, id, category)
         .then((image) => {
           if (!image) {
