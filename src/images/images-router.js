@@ -232,21 +232,21 @@ ImagesRouter
         .catch(next);
     }
 
-    sizeChart.forEach((size) => {
-      if (updateInfo[size]) {
-        ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
-          .then((image) => {
-            if (!image) {
-              return res.status(404).json({
-                error: `No image with id ${id} exists`
-              });
-            }
+    // sizeChart.forEach((size) => {
+    //   if (updateInfo[size] && updateInfo[size] !== null && updateInfo[size !== undefined]) {
+    //     ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
+    //       .then((image) => {
+    //         if (!image) {
+    //           return res.status(404).json({
+    //             error: `No image with id ${id} exists`
+    //           });
+    //         }
 
-            resImage = image;
-          })
-          .catch(next);
-      }
-    });
+    //         resImage = image;
+    //       })
+    //       .catch(next);
+    //   }
+    // });
 
     mapSizesToObject(resImage);
     return res.status(200).json({ resImage });
