@@ -246,7 +246,7 @@ ImagesRouter
 
     sizeChart.forEach((size) => {
       console.log('HIT SIZE CHART CHECK');
-      if (updateInfo[size] && updateInfo[size] !== null && updateInfo[size !== undefined]) {
+      if (updateInfo[size]) {
         console.log('SIZE CHART CHECK PASSED');
         ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
           .then((image) => {
