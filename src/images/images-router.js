@@ -49,6 +49,7 @@ ImagesRouter
       .catch(next);
   })
   .patch(requireAuth, (req, res, next) => {
+    console.log('PATCH ENDPOINT HIT');
     const {
       id,
       name,
@@ -86,6 +87,7 @@ ImagesRouter
     };
 
     if (!id) {
+      console.log('NO ID');
       return res.status(400).json({
         error: 'Missing id in request query'
       });
@@ -98,6 +100,7 @@ ImagesRouter
     }
 
     if (!updateInfo) {
+      console.log('NO UPDATEINFO');
       return res.status(400).json({
         error: 'Empty request query'
       });
@@ -107,6 +110,7 @@ ImagesRouter
     let resImage = {};
 
     if (name) {
+      console.log('NAME HIT');
       ImagesServices.renameImage(db, id, name)
         .then((image) => {
           if (!image) {
@@ -121,6 +125,7 @@ ImagesRouter
     }
 
     if (link) {
+      console.log('LINK HIT');
       ImagesServices.alterLink(db, id, link)
         .then((image) => {
           if (!image) {
@@ -135,6 +140,7 @@ ImagesRouter
     }
 
     if (description) {
+      console.log('DESCRIPTION HIT');
       ImagesServices.alterDescription(db, id, description)
         .then((image) => {
           if (!image) {
@@ -149,6 +155,7 @@ ImagesRouter
     }
 
     if (type) {
+      console.log('TYPE HIT');
       ImagesServices.alterType(db, id, type)
         .then((image) => {
           if (!image) {
@@ -163,6 +170,7 @@ ImagesRouter
     }
 
     if (price) {
+      console.log('PRICE HIT');
       ImagesServices.alterPrice(db, id, price)
         .then((image) => {
           if (!image) {
@@ -280,7 +288,6 @@ ImagesRouter
   });
 
 function mapSizesToObject(image) {
-  console.log('MAPSIZESTOOBJECT FUNCTION HIT');
   const newImage = image;
   newImage.availableSizes = {};
   sizeChart.forEach((size) => {
