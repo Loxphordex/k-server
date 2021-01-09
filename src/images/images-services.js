@@ -49,7 +49,7 @@ const ImagesServices = {
       })
       .returning('*')
       .then((image) => image)
-      .then((image) => ImagesServices.getById(db, image.id));
+      .then((image) => ImagesServices.getById(db, id));
   },
   alterType(db, id, newType) {
     return db('images')
