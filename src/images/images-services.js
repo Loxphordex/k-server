@@ -48,7 +48,7 @@ const ImagesServices = {
         thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then(([image]) => image)
+      .then((image) => image)
       .then((image) => ImagesServices.getById(db, image.id));
   },
   alterType(db, id, newType) {

@@ -248,7 +248,7 @@ ImagesRouter
       }
     });
 
-    // mapSizesToObject(resImage);
+    mapSizesToObject(resImage);
     return res.status(200).json({ resImage });
   })
   .delete(requireAuth, (req, res, next) => {
