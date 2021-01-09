@@ -184,65 +184,65 @@ ImagesRouter
         .catch(next);
     }
 
-    if (category !== undefined) {
-      console.log('HIT CATEGORY');
-      ImagesServices.alterCategory(db, id, category)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (category !== undefined) {
+    //   console.log('HIT CATEGORY');
+    //   ImagesServices.alterCategory(db, id, category)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (newArrival !== undefined && newArrival !== null) {
-      console.log('HIT NEW ARRIVAL');
-      ImagesServices.alterNewArrival(db, id, newArrival)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (newArrival !== undefined && newArrival !== null) {
+    //   console.log('HIT NEW ARRIVAL');
+    //   ImagesServices.alterNewArrival(db, id, newArrival)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (saleEnabled !== undefined && saleEnabled !== null) {
-      console.log('HIT SALE ENABLED');
-      ImagesServices.alterSaleEnabled(db, id, saleEnabled)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (saleEnabled !== undefined && saleEnabled !== null) {
+    //   console.log('HIT SALE ENABLED');
+    //   ImagesServices.alterSaleEnabled(db, id, saleEnabled)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
-    if (salePrice) {
-      console.log('HIT SALE PRICE');
-      ImagesServices.alterSalePrice(db, id, salePrice)
-        .then((image) => {
-          if (!image) {
-            return res.status(404).json({
-              error: `No image with id ${id} exists`
-            });
-          }
+    // if (salePrice) {
+    //   console.log('HIT SALE PRICE');
+    //   ImagesServices.alterSalePrice(db, id, salePrice)
+    //     .then((image) => {
+    //       if (!image) {
+    //         return res.status(404).json({
+    //           error: `No image with id ${id} exists`
+    //         });
+    //       }
 
-          resImage = image;
-        })
-        .catch(next);
-    }
+    //       resImage = image;
+    //     })
+    //     .catch(next);
+    // }
 
     sizeChart.forEach((size) => {
       console.log('HIT SIZE CHART CHECK');
