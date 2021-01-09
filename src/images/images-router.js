@@ -49,7 +49,6 @@ ImagesRouter
       .catch(next);
   })
   .patch(requireAuth, (req, res, next) => {
-    console.log('PATCH ENDPOINT HIT');
     const {
       id,
       name,
@@ -87,7 +86,6 @@ ImagesRouter
     };
 
     if (!id) {
-      console.log('NO ID');
       return res.status(400).json({
         error: 'Missing id in request query'
       });
@@ -100,7 +98,6 @@ ImagesRouter
     }
 
     if (!updateInfo) {
-      console.log('NO UPDATEINFO');
       return res.status(400).json({
         error: 'Empty request query'
       });
@@ -110,7 +107,6 @@ ImagesRouter
     let resImage = {};
 
     if (name) {
-      console.log('NAME HIT');
       ImagesServices.renameImage(db, id, name)
         .then((image) => {
           if (!image) {
@@ -125,7 +121,6 @@ ImagesRouter
     }
 
     if (link) {
-      console.log('LINK HIT');
       ImagesServices.alterLink(db, id, link)
         .then((image) => {
           if (!image) {
@@ -140,7 +135,6 @@ ImagesRouter
     }
 
     if (description) {
-      console.log('DESCRIPTION HIT');
       ImagesServices.alterDescription(db, id, description)
         .then((image) => {
           if (!image) {
@@ -155,7 +149,6 @@ ImagesRouter
     }
 
     if (type) {
-      console.log('TYPE HIT');
       ImagesServices.alterType(db, id, type)
         .then((image) => {
           if (!image) {
@@ -170,7 +163,6 @@ ImagesRouter
     }
 
     if (price) {
-      console.log('PRICE HIT');
       ImagesServices.alterPrice(db, id, price)
         .then((image) => {
           if (!image) {
@@ -184,70 +176,64 @@ ImagesRouter
         .catch(next);
     }
 
-    // if (category !== undefined) {
-    //   console.log('HIT CATEGORY');
-    //   ImagesServices.alterCategory(db, id, category)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
+    if (category !== undefined) {
+      ImagesServices.alterCategory(db, id, category)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
 
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
+          resImage = image;
+        })
+        .catch(next);
+    }
 
-    // if (newArrival !== undefined && newArrival !== null) {
-    //   console.log('HIT NEW ARRIVAL');
-    //   ImagesServices.alterNewArrival(db, id, newArrival)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
+    if (newArrival !== undefined && newArrival !== null) {
+      ImagesServices.alterNewArrival(db, id, newArrival)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
 
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
+          resImage = image;
+        })
+        .catch(next);
+    }
 
-    // if (saleEnabled !== undefined && saleEnabled !== null) {
-    //   console.log('HIT SALE ENABLED');
-    //   ImagesServices.alterSaleEnabled(db, id, saleEnabled)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
+    if (saleEnabled !== undefined && saleEnabled !== null) {
+      ImagesServices.alterSaleEnabled(db, id, saleEnabled)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
 
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
+          resImage = image;
+        })
+        .catch(next);
+    }
 
-    // if (salePrice) {
-    //   console.log('HIT SALE PRICE');
-    //   ImagesServices.alterSalePrice(db, id, salePrice)
-    //     .then((image) => {
-    //       if (!image) {
-    //         return res.status(404).json({
-    //           error: `No image with id ${id} exists`
-    //         });
-    //       }
+    if (salePrice) {
+      ImagesServices.alterSalePrice(db, id, salePrice)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
 
-    //       resImage = image;
-    //     })
-    //     .catch(next);
-    // }
+          resImage = image;
+        })
+        .catch(next);
+    }
 
     sizeChart.forEach((size) => {
-      console.log('HIT SIZE CHART CHECK');
       if (updateInfo[size] && updateInfo[size] !== null && updateInfo[size] !== 'null') {
-        console.log('SIZE CHART CHECK PASSED');
         ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
           .then((image) => {
             if (!image) {
