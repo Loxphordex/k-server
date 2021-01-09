@@ -177,6 +177,7 @@ ImagesRouter
     }
 
     if (category !== undefined) {
+      console.log('HIT CATEGORY');
       ImagesServices.alterCategory(db, id, category)
         .then((image) => {
           if (!image) {
@@ -191,6 +192,7 @@ ImagesRouter
     }
 
     if (newArrival !== undefined && newArrival !== null) {
+      console.log('HIT NEW ARRIVAL');
       ImagesServices.alterNewArrival(db, id, newArrival)
         .then((image) => {
           if (!image) {
@@ -205,6 +207,7 @@ ImagesRouter
     }
 
     if (saleEnabled !== undefined && saleEnabled !== null) {
+      console.log('HIT SALE ENABLED');
       ImagesServices.alterSaleEnabled(db, id, saleEnabled)
         .then((image) => {
           if (!image) {
@@ -219,6 +222,7 @@ ImagesRouter
     }
 
     if (salePrice) {
+      console.log('HIT SALE PRICE');
       ImagesServices.alterSalePrice(db, id, salePrice)
         .then((image) => {
           if (!image) {
@@ -232,21 +236,23 @@ ImagesRouter
         .catch(next);
     }
 
-    // sizeChart.forEach((size) => {
-    //   if (updateInfo[size] && updateInfo[size] !== null && updateInfo[size !== undefined]) {
-    //     ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
-    //       .then((image) => {
-    //         if (!image) {
-    //           return res.status(404).json({
-    //             error: `No image with id ${id} exists`
-    //           });
-    //         }
+    sizeChart.forEach((size) => {
+      console.log('HIT SIZE CHART CHECK');
+      if (updateInfo[size] && updateInfo[size] !== null && updateInfo[size !== undefined]) {
+        console.log('SIZE CHART CHECK PASSED');
+        ImagesServices.updateSize(db, id, size.toLowerCase(), updateInfo[size])
+          .then((image) => {
+            if (!image) {
+              return res.status(404).json({
+                error: `No image with id ${id} exists`
+              });
+            }
 
-    //         resImage = image;
-    //       })
-    //       .catch(next);
-    //   }
-    // });
+            resImage = image;
+          })
+          .catch(next);
+      }
+    });
 
     mapSizesToObject(resImage);
     return res.status(200).json({ resImage });
@@ -274,6 +280,7 @@ ImagesRouter
   });
 
 function mapSizesToObject(image) {
+  console.log('MAPSIZESTOOBJECT FUNCTION HIT');
   const newImage = image;
   newImage.availableSizes = {};
   sizeChart.forEach((size) => {
