@@ -190,7 +190,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (newArrival) {
+    if (newArrival !== undefined && newArrival !== null) {
       ImagesServices.alterNewArrival(db, id, newArrival)
         .then((image) => {
           if (!image) {
@@ -204,7 +204,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (saleEnabled) {
+    if (saleEnabled !== undefined && saleEnabled !== null) {
       ImagesServices.alterSaleEnabled(db, id, saleEnabled)
         .then((image) => {
           if (!image) {
