@@ -56,6 +56,9 @@ ImagesRouter
       description,
       type,
       price,
+      category,
+      modifier,
+      salePrice,
       small,
       medium,
       large,
@@ -70,6 +73,9 @@ ImagesRouter
       description,
       type,
       price,
+      category,
+      modifier,
+      salePrice,
       small,
       medium,
       large,
@@ -156,6 +162,48 @@ ImagesRouter
 
     if (price) {
       ImagesServices.alterPrice(db, id, price)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (category) {
+      ImagesServices.alterCategory(db, id, category)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (modifier) {
+      ImagesServices.alterModifier(db, id, modifier)
+        .then((image) => {
+          if (!image) {
+            return res.status(404).json({
+              error: `No image with id ${id} exists`
+            });
+          }
+
+          resImage = image;
+        })
+        .catch(next);
+    }
+
+    if (salePrice) {
+      ImagesServices.alterSalePrice(db, id, salePrice)
         .then((image) => {
           if (!image) {
             return res.status(404).json({

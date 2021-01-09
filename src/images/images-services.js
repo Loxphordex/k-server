@@ -73,6 +73,39 @@ const ImagesServices = {
       .then(([image]) => image)
       .then((image) => ImagesServices.getById(db, image.id));
   },
+  alterCategory(db, id, newCategory) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        category: newCategory,
+        thisKeyIsSkipped: undefined
+      })
+      .returning('*')
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
+  },
+  alterModifier(db, id, newModifier) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        modifier: newModifier,
+        thisKeyIsSkipped: undefined
+      })
+      .returning('*')
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
+  },
+  alterSalePrice(db, id, newSalePrice) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        sale_price: newSalePrice,
+        thisKeyIsSkipped: undefined
+      })
+      .returning('*')
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
+  },
   updateSize(db, id, size, count) {
     return db('images')
       .where('images.id', id)
