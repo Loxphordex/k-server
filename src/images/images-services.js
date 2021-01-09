@@ -84,11 +84,22 @@ const ImagesServices = {
       .then(([image]) => image)
       .then((image) => ImagesServices.getById(db, image.id));
   },
-  alterModifier(db, id, newModifier) {
+  alterNewArrival(db, id, newArrival) {
     return db('images')
       .where('images.id', id)
       .update({
-        modifier: newModifier,
+        new_arrival: newArrival,
+        thisKeyIsSkipped: undefined
+      })
+      .returning('*')
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
+  },
+  alterSaleEnabled(db, id, saleEnabled) {
+    return db('images')
+      .where('images.id', id)
+      .update({
+        sale_enabled: saleEnabled,
         thisKeyIsSkipped: undefined
       })
       .returning('*')
