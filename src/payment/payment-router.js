@@ -75,10 +75,7 @@ PaymentRouter
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      console.log('session: ', session);
     }
-
-    console.log('Got payload', payload);
 
     res.status(200);
   });
