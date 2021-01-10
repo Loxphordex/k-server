@@ -48,8 +48,8 @@ const ImagesServices = {
         thisKeyIsSkipped: undefined
       })
       .returning('*')
-      .then((image) => image)
-      .then((image) => ImagesServices.getById(db, id));
+      .then(([image]) => image)
+      .then((image) => ImagesServices.getById(db, image.id));
   },
   alterType(db, id, newType) {
     return db('images')
