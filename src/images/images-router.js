@@ -48,7 +48,7 @@ ImagesRouter
         .json({ dbImage }))
       .catch(next);
   })
-  .patch(requireAuth, (req, res, next) => {
+  .patch(bodyParser, requireAuth, (req, res, next) => {
     const {
       id,
       name,
