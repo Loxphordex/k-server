@@ -273,6 +273,32 @@ ImagesRouter
       .catch(next);
   });
 
+ImagesRouter
+  .route('/images/sale')
+  .get((req, res) => {
+    ImagesServices.getImagesOnSale(req.app.get('db'))
+      .then((images) => {
+        if (!images) {
+          return res.status(500).json({
+            error: 'Missing images on sale in database'
+          });
+        }
+      });
+  });
+
+ImagesRouter
+  .route('images/arrivals')
+  .get((req, res) => {
+    ImagesServices.getImagesOnNewArrival(req.app.get('db'))
+      .then((images) => {
+        if (!images) {
+          return res.status(500).json({
+            error: 'Missing images on new arrival in database'
+          });
+        }
+      });
+  });
+
 function mapSizesToObject(image) {
   const newImage = image;
   newImage.availableSizes = {};

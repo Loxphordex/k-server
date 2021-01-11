@@ -10,6 +10,18 @@ const ImagesServices = {
       .select('*')
       .orderBy('id', 'desc');
   },
+  getImagesOnSale(db) {
+    return db('images')
+      .select('*')
+      .where('images.sale_enabled', true)
+      .orderBy('id', 'desc');
+  },
+  getImagesOnNewArrival(db) {
+    return db('images')
+      .select('*')
+      .where('images.new_arrivals', true)
+      .orderBy('id', 'desc');
+  },
   insertImage(db, image) {
     return db
       .insert(image)
