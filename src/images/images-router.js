@@ -287,7 +287,7 @@ ImagesRouter
   });
 
 ImagesRouter
-  .route('images/arrivals')
+  .route('/images/arrivals')
   .get((req, res) => {
     ImagesServices.getImagesOnNewArrival(req.app.get('db'))
       .then((images) => {
