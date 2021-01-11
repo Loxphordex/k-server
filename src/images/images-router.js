@@ -24,10 +24,10 @@ ImagesRouter
   })
   .post(bodyParser, requireAuth, (req, res, next) => {
     const {
-      url, name, link, description, type
+      url, name, link, description, type, category
     } = req.body;
     const newImage = {
-      url, name, link, description, type
+      url, name, link, description, type, category
     };
 
     if (!newImage.url) {
