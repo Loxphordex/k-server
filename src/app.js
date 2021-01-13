@@ -9,6 +9,7 @@ const {
   NODE_ENV, EMAIL_PASSWORD, SECRET_PAY_KEY, SIGNING_SECRET
 } = require('./config');
 
+const bodyParser = express.json();
 const app = express();
 
 const AuthRouter = require('./auth/auth-router');
@@ -46,6 +47,19 @@ mailer.extend(app, {
 app.use('/api', ImagesRouter);
 app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
+app.post('/api/test/email', bodyParser, (req, res, next) => {
+  app.mailer.send('testTemplate', {
+    to: 'test.monkey.loxphordex@gmail.com',
+    subject: 'TEST'
+  }, (err) => {
+    if (err) {
+      console.log(`Email error: ${err}`);
+      return res.status(500).json({ error: 'Email confirmation failed' });
+    }
+
+    return res.status(200);
+  });
+});
 app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), (req, res, next) => {
   const payload = req.body;
   const webhookEndpointSecret = SIGNING_SECRET;
