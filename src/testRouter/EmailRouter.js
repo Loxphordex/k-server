@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config');
 
 const bodyParser = express.json();
 const EmailRouter = express.Router();
@@ -7,6 +8,8 @@ EmailRouter
   .route('/test_email')
   .post(bodyParser, (req, res, next) => {
     try {
+      console.log('res: ', res);
+      console.log(config.EMAIL_PASSWORD[0]);
       res.mailer.send('testTemplate', {
         to: 'silasishallahan@gmail.com',
         subject: 'TEST'
