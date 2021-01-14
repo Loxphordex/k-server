@@ -15,6 +15,7 @@ const app = express();
 const AuthRouter = require('./auth/auth-router');
 const ImagesRouter = require('./images/images-router');
 const PaymentRouter = require('./payment/payment-router');
+const EmailRouter = require('./testRouter/EmailRouter');
 const stripe = require('stripe')(SECRET_PAY_KEY);
 
 const morganOption = (NODE_ENV === 'production')
@@ -47,19 +48,7 @@ mailer.extend(app, {
 app.use('/api', ImagesRouter);
 app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
-app.post('/api/test/email', bodyParser, (req, res, next) => {
-  app.mailer.send('testTemplate', {
-    to: 'test.monkey.loxphordex@gmail.com',
-    subject: 'TEST'
-  }, (err) => {
-    if (err) {
-      console.log(`Email error: ${err}`);
-      return res.status(500).json({ error: 'Email confirmation failed' });
-    }
-
-    return res.status(200);
-  });
-});
+app.use('/api/email', EmailRouter);
 app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), (req, res, next) => {
   const payload = req.body;
   const webhookEndpointSecret = SIGNING_SECRET;
