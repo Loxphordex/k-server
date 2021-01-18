@@ -39,6 +39,28 @@ DiscoverRouter
         .location(path.posix.join(req.originalUrl, `/${createdEntry.id}`))
         .json({ entry: createdEntry }))
       .catch(next);
+  })
+  .delete(requireAuth, (req, res, next) => {
+    const { id } = req.query;
+    const db = req.app.get('db');
+
+    if (!id) {
+      return res.status(400).json({
+        error: 'Missing id in request query'
+      });
+    }
+
+    DiscoverServices.deleteEntry(db, id)
+      .then((entryId) => {
+        if (!entryId) {
+          return res.status(404).json({
+            error: `No entry with id ${id} exists`
+          });
+        }
+
+        return res.status(200).json({ id: entryId });
+      })
+      .catch(next);
   });
 
 module.exports = DiscoverRouter;

@@ -17,6 +17,12 @@ const DiscoverServices = {
       .returning('*')
       .then(([newEntry]) => newEntry)
       .then((newEntry) => DiscoverServices.getById(db, newEntry.id));
+  },
+  deleteEntry(db, id) {
+    return db('discover')
+      .where('discover.id', id)
+      .del()
+      .returning('*');
   }
 };
 
