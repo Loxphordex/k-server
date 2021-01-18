@@ -23,16 +23,16 @@ DiscoverRouter
       });
   })
   .post(bodyParser, requireAuth, (req, res, next) => {
-    const { newEntry } = req.body;
+    const { content } = req.body;
     const db = req.app.get('db');
 
-    if (!newEntry) {
+    if (!content) {
       return res.status(404).json({
-        error: 'No newEntry property in request body'
+        error: 'No content property in request body'
       });
     }
 
-    const safeEntry = xss(newEntry);
+    const safeEntry = xss(content);
 
     DiscoverServices.postEntry(db, safeEntry)
       .then((createdEntry) => res.status(201)
