@@ -33,8 +33,11 @@ DiscoverRouter
     }
 
     const safeEntry = xss(content);
+    const scrubbedContent = {
+      content: safeEntry
+    };
 
-    DiscoverServices.postEntry(db, safeEntry)
+    DiscoverServices.postEntry(db, scrubbedContent)
       .then((createdEntry) => res.status(201)
         .location(path.posix.join(req.originalUrl, `/${createdEntry.id}`))
         .json({ entry: createdEntry }))
