@@ -23,18 +23,26 @@ DiscoverRouter
       });
   })
   .post(bodyParser, requireAuth, (req, res, next) => {
-    const { content } = req.body;
+    const { title, content } = req.body;
     const db = req.app.get('db');
 
+    if (!title) {
+      return res.status(400).json({
+        error: 'No title in request body'
+      });
+    }
+
     if (!content) {
-      return res.status(404).json({
+      return res.status(400).json({
         error: 'No content property in request body'
       });
     }
 
-    const safeEntry = xss(content);
+    const safeTitle = xss(title);
+    const safeContent = xss(content);
     const scrubbedContent = {
-      content: safeEntry
+      title: safeTitle,
+      content: safeContent
     };
 
     DiscoverServices.postEntry(db, scrubbedContent)
