@@ -12,7 +12,7 @@ DiscoverRouter
   .route('/')
   .get((req, res) => {
     const { id } = req.query;
-    const db = req.app.get('app');
+    const db = req.app.get('db');
 
     if (id) {
       DiscoverServices.getById(db, id)
