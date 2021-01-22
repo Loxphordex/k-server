@@ -27,7 +27,7 @@ DiscoverRouter
         });
     }
     else {
-      DiscoverServices.getAllEntries(id)
+      DiscoverServices.getAllEntries(db)
         .then((entries) => {
           if (!entries) {
             return res.status(500).json({
