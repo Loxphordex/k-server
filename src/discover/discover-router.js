@@ -40,7 +40,7 @@ DiscoverRouter
     }
   })
   .post(bodyParser.json({ limit: '50mb' }), requireAuth, (req, res, next) => {
-    const { title, content } = req.body;
+    const { title, content, url } = req.body;
     const db = req.app.get('db');
 
     if (!title) {
@@ -59,7 +59,8 @@ DiscoverRouter
     const safeContent = xss(content);
     const scrubbedContent = {
       title: safeTitle,
-      content: safeContent
+      content: safeContent,
+      header_url: url
     };
 
     DiscoverServices.postEntry(db, scrubbedContent)
