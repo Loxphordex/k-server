@@ -3,7 +3,7 @@ const path = require('path');
 const requireAuth = require('../middleware/jwt-auth');
 const xss = require('xss');
 
-const bodyParser = express.json();
+const bodyParser = require('body-parser');
 const DiscoverServices = require('./discover-services');
 
 const DiscoverRouter = express.Router();
@@ -22,7 +22,7 @@ DiscoverRouter
         return res.json({ entries });
       });
   })
-  .post(bodyParser, requireAuth, (req, res, next) => {
+  .post(bodyParser.json({ limit: '50mb' }), requireAuth, (req, res, next) => {
     const { title, content } = req.body;
     const db = req.app.get('db');
 
