@@ -11,16 +11,33 @@ const DiscoverRouter = express.Router();
 DiscoverRouter
   .route('/')
   .get((req, res) => {
-    DiscoverServices.getAllEntries(req.app.get('db'))
-      .then((entries) => {
-        if (!entries) {
-          return res.status(500).json({
-            error: 'Missing discover entries in database'
-          });
-        }
+    const { id } = req.query;
+    const db = req.app.get('app');
 
-        return res.json({ entries });
-      });
+    if (id) {
+      DiscoverServices.getById(db, id)
+        .then((entry) => {
+          if (!entry) {
+            return res.status(404).json({
+              error: 'Missing discover entry id in database'
+            });
+          }
+
+          return res.json({ entry });
+        });
+    }
+    else {
+      DiscoverServices.getAllEntries(id)
+        .then((entries) => {
+          if (!entries) {
+            return res.status(500).json({
+              error: 'Missing discover entries in database'
+            });
+          }
+
+          return res.json({ entries });
+        });
+    }
   })
   .post(bodyParser.json({ limit: '50mb' }), requireAuth, (req, res, next) => {
     const { title, content } = req.body;
