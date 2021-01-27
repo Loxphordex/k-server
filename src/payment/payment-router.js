@@ -58,6 +58,10 @@ PaymentRouter
   });
 
 PaymentRouter
+  .route('/create-intent')
+  .get((req, res) => res.status(200).json({ message: 'create-intent route' }));
+
+PaymentRouter
   .route('/webhook')
   .post(webHookParser.raw({ type: 'application/json' }), (req, res) => {
     const payload = req.body;
