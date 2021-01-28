@@ -31,6 +31,7 @@ PaymentRouter
     }
 
     stripe.checkout.sessions.create({
+      billing_address_collection: 'required',
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
@@ -60,7 +61,7 @@ PaymentRouter
 PaymentRouter
   .route('/create-intent')
   .get((req, res) => res.status(200).json({ message: 'create-intent route' }))
-  .post(async (req, res) => {
+  .post(bodyParser, async (req, res) => {
     const { amount, id } = req.body;
 
     try {
