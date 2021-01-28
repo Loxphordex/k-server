@@ -32,6 +32,9 @@ PaymentRouter
 
     stripe.checkout.sessions.create({
       billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['US']
+      },
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
