@@ -59,7 +59,32 @@ PaymentRouter
 
 PaymentRouter
   .route('/create-intent')
-  .get((req, res) => res.status(200).json({ message: 'create-intent route' }));
+  .get((req, res) => res.status(200).json({ message: 'create-intent route' }))
+  .post(async (req, res) => {
+    const { amount, id } = req.body;
+
+    try {
+      const payment = await stripe.paymentIntents.create({
+        amount,
+        payment_method: id,
+        currency: 'usd',
+        confirm: true
+      });
+
+      console.log('Stripe payment intent success', payment);
+      return res.status(200).json({
+        message: 'payment successful',
+        success: true
+      });
+    }
+    catch (err) {
+      console.log('Stripe payment intent error ', err);
+      return res.status(500).json({
+        message: 'payment failed',
+        success: false
+      });
+    }
+  });
 
 PaymentRouter
   .route('/webhook')
