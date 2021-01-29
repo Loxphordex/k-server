@@ -8,7 +8,7 @@ const bodyParser = express.json();
 const PaymentRouter = express.Router();
 
 PaymentRouter
-  .route('/create-session')
+  .route('/create_session')
   .get((req, res) => res.status(200).json({
     message: 'create-session request successful'
   }))

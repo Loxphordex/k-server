@@ -1,38 +1,45 @@
 const express = require('express');
 const nodeMailer = require('nodemailer');
 const config = require('../config');
+const requireAuth = require('../middleware/jwt-auth');
 
 const bodyParser = express.json();
 const EmailRouter = express.Router();
 
 EmailRouter
   .route('/test_email')
-  .post(bodyParser, (req, res, next) => {
+  .post(bodyParser, requireAuth, (req, res, next) => {
     try {
-      // const sendOptions = { template: 'testTemplate' };
-      // res.mailer.send(sendOptions, {
-      //   to: 'silasishallahan@gmail.com',
-      //   subject: 'TEST'
-      // }, (err) => {
-      //   if (err) {
-      //     console.log(`Email error: ${err}`);
-      //     return res.status(500).json({ error: 'Email confirmation failed' });
-      //   }
-
-      //   return res.status(200);
-      // });
       const transporter = nodeMailer.createTransport({
+        name: 'pearegrine.com',
         host: 'smtp.gmail.com',
-        port: 456,
-        secure: false,
+        port: 465,
+        secure: true,
         auth: {
+          type: 'OAuth2',
           user: 'test.monkey.loxphordex@gmail.com',
-          pass: config.EMAIL_PASSWORD
+          clientId: config.TEST_CLIENT_ID,
+          clientSecret: config.TEST_CLIENT_SECRET,
+          refreshToken: config.TEST_REFRESH_TOKEN,
+          accessToken: config.TEST_ACCESS_TOKEN,
+          expires: 3357
+        },
+        tls: {
+          rejectUnauthorized: true
+        }
+      });
+
+      // verify connection configuration
+      transporter.verify((error, success) => {
+        if (error) {
+          console.log(error);
+        }
+        else {
+          console.log('Server is ready to take our messages', success);
         }
       });
 
       transporter.sendMail({
-        from: 'Test Mankey',
         to: 'silasishallahan@gmail.com',
         subject: 'Testing',
         text: 'Test email sent from express',
