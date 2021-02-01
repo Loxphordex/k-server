@@ -25,7 +25,7 @@ EmailRouter
           expires: 3357
         },
         tls: {
-          rejectUnauthorized: true
+          rejectUnauthorized: false
         }
       });
 
