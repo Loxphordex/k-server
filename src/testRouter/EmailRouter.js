@@ -16,13 +16,8 @@ EmailRouter
         port: 465,
         secure: true,
         auth: {
-          type: 'OAuth2',
           user: 'test.monkey.loxphordex@gmail.com',
-          clientId: config.TEST_CLIENT_ID,
-          clientSecret: config.TEST_CLIENT_SECRET,
-          refreshToken: config.TEST_REFRESH_TOKEN,
-          accessToken: config.TEST_ACCESS_TOKEN,
-          expires: 3357
+          pass: config.EMAIL_PASSWORD
         },
         tls: {
           rejectUnauthorized: false
