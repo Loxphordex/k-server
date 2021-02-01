@@ -13,8 +13,9 @@ const app = express();
 const AuthRouter = require('./auth/auth-router');
 const ImagesRouter = require('./images/images-router');
 const PaymentRouter = require('./payment/payment-router');
-const EmailRouter = require('./testRouter/EmailRouter');
+const EmailRouter = require('./email/EmailRouter');
 const DiscoverRouter = require('./discover/discover-router');
+const StripeEmailRouter = require('./stripe/StripeEmailRouter');
 const stripe = require('stripe')(SECRET_PAY_KEY);
 
 const morganOption = (NODE_ENV === 'production')
@@ -37,33 +38,35 @@ app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
 app.use('/api/email', EmailRouter);
 app.use('/api/discover', DiscoverRouter);
-app.post('/api/email_webhook', webHookParser.raw({ type: 'application/json' }), (req, res, next) => {
-  const payload = req.body;
-  const webhookEndpointSecret = SIGNING_SECRET;
-  const sig = req.headers['stripe-signature'];
+app.use('/api/email_webhook', StripeEmailRouter);
+// app.post('/api/email_webhook', webHookParser.raw({ type: 'application/json' }),
+// (req, res, next) => {
+//   const payload = req.body;
+//   const webhookEndpointSecret = SIGNING_SECRET;
+//   const sig = req.headers['stripe-signature'];
 
-  let event;
+//   let event;
 
-  try {
-    event = stripe.webhooks.constructEvent(payload, sig, webhookEndpointSecret);
-  }
-  catch (err) {
-    return res.status(400).json({ error: err.message });
-  }
+//   try {
+//     event = stripe.webhooks.constructEvent(payload, sig, webhookEndpointSecret);
+//   }
+//   catch (err) {
+//     return res.status(400).json({ error: err.message });
+//   }
 
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
+//   if (event.type === 'checkout.session.completed') {
+//     const session = event.data.object;
 
-    // send email to dispatch order
-    return res.status(200).json({
-      message: 'checkout session completed'
-    });
-  }
+//     // send email to dispatch order
+//     return res.status(200).json({
+//       message: 'checkout session completed'
+//     });
+//   }
 
-  console.log('Got payload', payload);
+//   console.log('Got payload', payload);
 
-  return res.status(200);
-});
+//   return res.status(200);
+// });
 
 app.use((error, req, res, next) => {
   let response;
