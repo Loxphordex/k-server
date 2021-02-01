@@ -37,7 +37,7 @@ app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
 app.use('/api/email', EmailRouter);
 app.use('/api/discover', DiscoverRouter);
-app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), (req, res, next) => {
+app.post('/api/email_webhook', webHookParser.raw({ type: 'application/json' }), (req, res, next) => {
   const payload = req.body;
   const webhookEndpointSecret = SIGNING_SECRET;
   const sig = req.headers['stripe-signature'];
@@ -55,16 +55,8 @@ app.post('/api/email/webhook', webHookParser.raw({ type: 'application/json' }), 
     const session = event.data.object;
 
     // send email to dispatch order
-    app.mailer.send('testTemplate', {
-      to: 'test.monkey.loxphordex@gmail.com',
-      subject: 'TEST'
-    }, (err) => {
-      if (err) {
-        console.log(`Email error: ${err}`);
-        return res.status(500).json({ error: 'Email confirmation failed' });
-      }
-
-      return res.status(200);
+    return res.status(200).json({
+      message: 'checkout session completed'
     });
   }
 
