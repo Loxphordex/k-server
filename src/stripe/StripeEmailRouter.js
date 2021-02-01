@@ -25,6 +25,8 @@ StripeEmailRouter
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
 
+      console.log('EVENT TYPE CHECK SUCCESS | SESSION: ', session);
+
       // Send email to customer
       return res.status(200).json({
         message: 'checkout session completed'
