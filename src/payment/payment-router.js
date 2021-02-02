@@ -38,8 +38,8 @@ PaymentRouter
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${config.TEST_CLIENT_URL}/confirm?success=true`,
-      cancel_url: `${config.TEST_CLIENT_URL}/confirm?canceled=true`
+      success_url: `${config.CLIENT_URL}/confirm?success=true`,
+      cancel_url: `${config.CLIENT_URL}/confirm?canceled=true`
     }).then((session) => {
       if (!session) {
         return res.status(404).json({
