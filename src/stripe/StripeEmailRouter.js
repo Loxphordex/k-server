@@ -61,7 +61,7 @@ StripeEmailRouter
         });
 
         transporter.sendMail({
-          from: 'Pearegrine',
+          from: 'Pearegrine <test.monkey.loxphordex@gmail.com>',
           to: customerEmail,
           subject: 'Order Confirmed',
           text: 'Your order was recieved',
