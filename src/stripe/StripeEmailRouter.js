@@ -38,12 +38,12 @@ StripeEmailRouter
           secure: true,
           auth: {
             type: 'OAuth2',
-            user: 'test.monkey.loxphordex@gmail.com',
+            user: 'noreplypearegrine@gmail.com',
             clientId: config.CLIENT_ID,
             clientSecret: config.CLIENT_SECRET,
             refreshToken: config.REFRESH_TOKEN,
             accessToken: config.ACCESS_TOKEN,
-            expires: 3510
+            expires: 3600
           },
           tls: {
             rejectUnauthorized: true
@@ -61,7 +61,7 @@ StripeEmailRouter
         });
 
         transporter.sendMail({
-          from: 'Pearegrine <test.monkey.loxphordex@gmail.com>',
+          from: 'Pearegrine <noreplypearegrine@gmail.com>',
           to: customerEmail,
           subject: 'Order Confirmed',
           text: 'Your order was recieved',
