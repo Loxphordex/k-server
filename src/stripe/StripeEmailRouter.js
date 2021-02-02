@@ -37,11 +37,16 @@ StripeEmailRouter
           port: 465,
           secure: true,
           auth: {
+            type: 'OAuth2',
             user: 'test.monkey.loxphordex@gmail.com',
-            pass: config.EMAIL_PASSWORD
+            clientId: config.TEST_CLIENT_ID,
+            clientSecret: config.TEST_CLIENT_SECRET,
+            refreshToken: config.TEST_REFRESH_TOKEN,
+            accessToken: config.TEST_ACCESS_TOKEN,
+            expires: 3510
           },
           tls: {
-            rejectUnauthorized: false
+            rejectUnauthorized: true
           }
         });
 
