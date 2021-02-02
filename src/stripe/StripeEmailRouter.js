@@ -39,10 +39,10 @@ StripeEmailRouter
           auth: {
             type: 'OAuth2',
             user: 'test.monkey.loxphordex@gmail.com',
-            clientId: config.TEST_CLIENT_ID,
-            clientSecret: config.TEST_CLIENT_SECRET,
-            refreshToken: config.TEST_REFRESH_TOKEN,
-            accessToken: config.TEST_ACCESS_TOKEN,
+            clientId: config.CLIENT_ID,
+            clientSecret: config.CLIENT_SECRET,
+            refreshToken: config.REFRESH_TOKEN,
+            accessToken: config.ACCESS_TOKEN,
             expires: 3510
           },
           tls: {
