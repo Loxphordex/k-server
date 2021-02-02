@@ -67,7 +67,19 @@ StripeEmailRouter
           text: 'Your order was recieved',
           html: '<p>Your order was recieved</p>'
         })
-          .then((onFulfilled) => res.status(200).json({ onFulfilled }))
+          .then((customerFulfilled) => {
+            transporter.sendMail({
+              from: 'Pearegrine <noreplypearegrine@gmail.com>',
+              to: 'silasishallahan@gmail.com',
+              // to: 'pearegrinenyc@outlook.com',
+              subject: 'A new order has been made!',
+              text: 'Please check your Stripe Dashboard for order details',
+              html: '<p>Please check your Stripe Dashboard for order details</p>'
+            }).then((notificationFulfilled) => res.status(200).json({
+              customerFulfilled,
+              notificationFulfilled
+            })).catch((err) => res.status(500).json({ error: err }));
+          })
           .catch((err) => res.status(500).json({ error: err }));
       }
       catch (err) {
