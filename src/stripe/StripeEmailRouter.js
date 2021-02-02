@@ -61,6 +61,7 @@ StripeEmailRouter
         });
 
         transporter.sendMail({
+          from: 'Pearegrine',
           to: customerEmail,
           subject: 'Order Confirmed',
           text: 'Your order was recieved',
