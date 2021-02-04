@@ -176,7 +176,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (category !== undefined || category !== null) {
+    if (category && category !== 'null') {
       console.log('CATEGORY UPDATED | ', category);
       ImagesServices.alterCategory(db, id, category)
         .then((image) => {
@@ -191,7 +191,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (newArrival !== undefined && newArrival !== null) {
+    if (newArrival && newArrival !== 'null') {
       ImagesServices.alterNewArrival(db, id, newArrival)
         .then((image) => {
           if (!image) {
@@ -205,7 +205,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (saleEnabled !== undefined && saleEnabled !== null) {
+    if (saleEnabled && saleEnabled !== 'null') {
       ImagesServices.alterSaleEnabled(db, id, saleEnabled)
         .then((image) => {
           if (!image) {
@@ -219,7 +219,7 @@ ImagesRouter
         .catch(next);
     }
 
-    if (salePrice) {
+    if (salePrice && salePrice !== 'null') {
       ImagesServices.alterSalePrice(db, id, salePrice)
         .then((image) => {
           if (!image) {
