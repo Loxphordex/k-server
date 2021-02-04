@@ -176,7 +176,8 @@ ImagesRouter
         .catch(next);
     }
 
-    if (category !== undefined) {
+    if (category !== undefined || category !== null) {
+      console.log('CATEGORY UPDATED | ', category);
       ImagesServices.alterCategory(db, id, category)
         .then((image) => {
           if (!image) {
