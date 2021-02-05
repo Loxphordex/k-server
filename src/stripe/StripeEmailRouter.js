@@ -70,8 +70,7 @@ StripeEmailRouter
           .then((customerFulfilled) => {
             transporter.sendMail({
               from: 'Pearegrine <noreplypearegrine@gmail.com>',
-              to: 'silasishallahan@gmail.com',
-              // to: 'pearegrinenyc@outlook.com',
+              to: 'pearegrinenyc@outlook.com',
               subject: 'A new order has been made!',
               text: 'Please check your Stripe Dashboard for order details',
               html: '<p>Please check your Stripe Dashboard for order details</p>'
