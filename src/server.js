@@ -6,14 +6,7 @@ const {
 
 const db = knex({
   client: 'pg',
-  connection: {
-    host: DATABASE_HOST,
-    database: DATABASE_NAME,
-    port: DATABASE_PORT,
-    user: DATABASE_USER,
-    password: DATABASE_PASSWORD,
-    ssl: true
-  }
+  connection: `${DATABASE_URL}?ssl=true`
 });
 
 app.set('db', db);
