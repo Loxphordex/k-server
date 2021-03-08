@@ -10,8 +10,10 @@ const sizeChart = require('../constants/sizeChart');
 ImagesRouter
   .route('/images')
   .get((req, res) => {
+    console.log('IMAGES ROUTE FETCH - GET');
     ImagesServices.getAllImages(req.app.get('db'))
       .then((images) => {
+        console.log('IMAGES SERVICES GET ALL IMAGES RAN');
         if (!images) {
           return res.status(500).json({
             error: 'Missing images in database'
@@ -19,6 +21,7 @@ ImagesRouter
         }
 
         const mappedImages = images.map((image) => mapSizesToObject(image));
+        console.log('MAPPED IMAGES RAN');
         return res.json({ mappedImages });
       });
   })
