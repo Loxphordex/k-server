@@ -72,6 +72,8 @@ AuthRouter
               });
             }
 
+            console.log('PASSWORDS MATCH');
+
             const sub = dbUser.username;
             const payload = { user_id: dbUser.id };
             const authToken = AuthServices.createJwt(sub, payload);
