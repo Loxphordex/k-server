@@ -6,6 +6,8 @@ const AuthServices = require('./auth-services');
 
 const bodyParser = express.json();
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 AuthRouter
   .route('/register')
   .get((req, res) => {
