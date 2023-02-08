@@ -33,6 +33,8 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
+//
+
 app.use('/api', ImagesRouter);
 app.use('/api/pay', PaymentRouter);
 app.use('/api/auth', AuthRouter);
